@@ -1,0 +1,9 @@
+apiVersion: consul.cloudopskit.org.cloudopskit.org/v1alpha1
+kind: AclBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: consul-acl-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: aclbinding-sample
+spec:
+  # TODO(user): Add fields here

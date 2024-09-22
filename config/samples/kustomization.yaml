@@ -1,0 +1,7 @@
+## Append samples of your project ##
+resources:
+- consul.cloudopskit.org_v1alpha1_aclbinding.yaml
+- consul.cloudopskit.org_v1alpha1_aclpolicy.yaml
+- consul.cloudopskit.org_v1alpha1_aclrole.yaml
+- consul.cloudopskit.org_v1alpha1_authmethod.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples

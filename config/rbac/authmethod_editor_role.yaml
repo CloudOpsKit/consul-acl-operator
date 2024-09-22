@@ -1,0 +1,27 @@
+# permissions for end users to edit authmethods.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: consul-acl-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: authmethod-editor-role
+rules:
+- apiGroups:
+  - consul.cloudopskit.org.cloudopskit.org
+  resources:
+  - authmethods
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - consul.cloudopskit.org.cloudopskit.org
+  resources:
+  - authmethods/status
+  verbs:
+  - get
