@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  consul:
+    image: consul:1.19.2
+    container_name: consul
+    volumes:
+      - ./config:/config
+    ports:
+      - 8500:8500
+    command:
+      [
+        "consul",
+        "agent",
+        "-server",
+        "-ui",
+        "-bind",
+        "0.0.0.0",
+        "-client",
+        "0.0.0.0",
+        "-bootstrap",
+        "-datacenter",
+        "docker",
+        "-dev",
+        "-config-file",
+        "/config/consul.hcl",
+      ]
