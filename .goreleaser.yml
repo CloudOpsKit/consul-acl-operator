@@ -1,0 +1,550 @@
+project_name: tenv
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+    - go test ./...
+    - go get -u ./cmd/tenv
+    - go get -u ./cmd/tofu
+    - go get -u ./cmd/terraform
+    - go get -u ./cmd/terragrunt
+    - go get -u ./cmd/tf
+    - go get -u ./cmd/atmos
+
+builds:
+  - id: tenv
+    main: ./cmd/tenv
+    binary: tenv
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X main.version={{.Tag}}
+    goos:
+      - linux
+      - windows
+      - darwin
+      - freebsd
+      - openbsd
+      - solaris
+    goarch:
+      - "386"
+      - amd64
+      - arm
+      - arm64
+    ignore:
+      - goos: darwin
+        goarch: "386"
+      - goos: darwin
+        goarch: arm
+      - goos: solaris
+        goarch: "386"
+      - goos: solaris
+        goarch: arm
+      - goos: solaris
+        goarch: arm64
+
+  - id: tofu
+    binary: tofu
+    main: ./cmd/tofu
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+      - freebsd
+      - openbsd
+      - solaris
+    goarch:
+      - "386"
+      - amd64
+      - arm
+      - arm64
+    ignore:
+      - goos: darwin
+        goarch: "386"
+      - goos: darwin
+        goarch: arm
+      - goos: solaris
+        goarch: "386"
+      - goos: solaris
+        goarch: arm
+      - goos: solaris
+        goarch: arm64
+
+  - id: terraform
+    binary: terraform
+    main: ./cmd/terraform
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+      - freebsd
+      - openbsd
+      - solaris
+    goarch:
+      - "386"
+      - amd64
+      - arm
+      - arm64
+    ignore:
+      - goos: darwin
+        goarch: "386"
+      - goos: darwin
+        goarch: arm
+      - goos: solaris
+        goarch: "386"
+      - goos: solaris
+        goarch: arm
+      - goos: solaris
+        goarch: arm64
+
+  - id: terragrunt
+    binary: terragrunt
+    main: ./cmd/terragrunt
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+      - freebsd
+      - openbsd
+      - solaris
+    goarch:
+      - "386"
+      - amd64
+      - arm
+      - arm64
+    ignore:
+      - goos: darwin
+        goarch: "386"
+      - goos: darwin
+        goarch: arm
+      - goos: solaris
+        goarch: "386"
+      - goos: solaris
+        goarch: arm
+      - goos: solaris
+        goarch: arm64
+
+  - id: tf
+    binary: tf
+    main: ./cmd/tf
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+      - freebsd
+      - openbsd
+      - solaris
+    goarch:
+      - "386"
+      - amd64
+      - arm
+      - arm64
+    ignore:
+      - goos: darwin
+        goarch: "386"
+      - goos: darwin
+        goarch: arm
+      - goos: solaris
+        goarch: "386"
+      - goos: solaris
+        goarch: arm
+      - goos: solaris
+        goarch: arm64
+
+  - id: atmos
+    binary: atmos
+    main: ./cmd/atmos
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+      - freebsd
+      - openbsd
+      - solaris
+    goarch:
+      - "386"
+      - amd64
+      - arm
+      - arm64
+    ignore:
+      - goos: darwin
+        goarch: "386"
+      - goos: darwin
+        goarch: arm
+      - goos: solaris
+        goarch: "386"
+      - goos: solaris
+        goarch: arm
+      - goos: solaris
+        goarch: arm64
+
+dockers:
+  - use: buildx
+    goarch: amd64
+    dockerfile: Dockerfile.goreleaser
+    build_flag_templates:
+      - "--pull"
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.vendor=tofuutils"
+      - "--label=org.opencontainers.image.description=tenv {{ .Version }}"
+      - "--label=org.opencontainers.image.url=https://github.com/tofuutils/tenv"
+      - "--label=org.opencontainers.image.documentation=https://github.com/tofuutils/tenv/blob/main/README.md"
+      - "--label=org.opencontainers.image.source=https://github.com/tofuutils/tenv"
+      - "--label=org.opencontainers.image.licenses=Apache-2.0"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - '--label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}'
+    image_templates:
+      - "ghcr.io/tofuutils/tenv:latest-amd64"
+      - "ghcr.io/tofuutils/tenv:{{ .Version }}-amd64"
+      - "ghcr.io/tofuutils/tenv:{{ .Major }}.{{ .Minor }}-amd64"
+      - "registry.hub.docker.com/tofuutils/tenv:latest-amd64"
+      - "registry.hub.docker.com/tofuutils/tenv:{{ .Version }}-amd64"
+      - "registry.hub.docker.com/tofuutils/tenv:{{ .Major }}.{{ .Minor }}-amd64"
+    skip_push: true
+
+  - use: buildx
+    goarch: arm64
+    dockerfile: Dockerfile.goreleaser
+    build_flag_templates:
+      - "--pull"
+      - "--platform=linux/arm64"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.vendor=tofuutils"
+      - "--label=org.opencontainers.image.description=tenv {{ .Version }}"
+      - "--label=org.opencontainers.image.url=https://github.com/tofuutils/tenv"
+      - "--label=org.opencontainers.image.documentation=https://github.com/tofuutils/tenv/blob/main/README.md"
+      - "--label=org.opencontainers.image.source=https://github.com/tofuutils/tenv"
+      - "--label=org.opencontainers.image.licenses=Apache-2.0"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - '--label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}'
+    image_templates:
+      - "ghcr.io/tofuutils/tenv:latest-arm64"
+      - "ghcr.io/tofuutils/tenv:{{ .Version }}-arm64"
+      - "ghcr.io/tofuutils/tenv:{{ .Major }}.{{ .Minor }}-arm64"
+      - "registry.hub.docker.com/tofuutils/tenv:latest-arm64"
+      - "registry.hub.docker.com/tofuutils/tenv:{{ .Version }}-arm64"
+      - "registry.hub.docker.com/tofuutils/tenv:{{ .Major }}.{{ .Minor }}-arm64"
+    skip_push: true
+
+  - use: buildx
+    goarch: arm
+    dockerfile: Dockerfile.goreleaser
+    build_flag_templates:
+      - "--pull"
+      - "--platform=linux/arm"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.vendor=tofuutils"
+      - "--label=org.opencontainers.image.description=tenv {{ .Version }}"
+      - "--label=org.opencontainers.image.url=https://github.com/tofuutils/tenv"
+      - "--label=org.opencontainers.image.documentation=https://github.com/tofuutils/tenv/blob/main/README.md"
+      - "--label=org.opencontainers.image.source=https://github.com/tofuutils/tenv"
+      - "--label=org.opencontainers.image.licenses=Apache-2.0"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - '--label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}'
+    image_templates:
+      - "ghcr.io/tofuutils/tenv:latest-arm"
+      - "ghcr.io/tofuutils/tenv:{{ .Version }}-arm"
+      - "ghcr.io/tofuutils/tenv:{{ .Major }}.{{ .Minor }}-arm"
+      - "registry.hub.docker.com/tofuutils/tenv:latest-arm"
+      - "registry.hub.docker.com/tofuutils/tenv:{{ .Version }}-arm"
+      - "registry.hub.docker.com/tofuutils/tenv:{{ .Major }}.{{ .Minor }}-arm"
+    skip_push: true
+
+  - use: buildx
+    goarch: "386"
+    dockerfile: Dockerfile.goreleaser
+    build_flag_templates:
+      - "--pull"
+      - "--platform=linux/386"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.vendor=tofuutils"
+      - "--label=org.opencontainers.image.description=tenv {{ .Version }}"
+      - "--label=org.opencontainers.image.url=https://github.com/tofuutils/tenv"
+      - "--label=org.opencontainers.image.documentation=https://github.com/tofuutils/tenv/blob/main/README.md"
+      - "--label=org.opencontainers.image.source=https://github.com/tofuutils/tenv"
+      - "--label=org.opencontainers.image.licenses=Apache-2.0"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - '--label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}'
+    image_templates:
+      - "ghcr.io/tofuutils/tenv:latest-386"
+      - "ghcr.io/tofuutils/tenv:{{ .Version }}-386"
+      - "ghcr.io/tofuutils/tenv:{{ .Major }}.{{ .Minor }}-386"
+      - "registry.hub.docker.com/tofuutils/tenv:latest-386"
+      - "registry.hub.docker.com/tofuutils/tenv:{{ .Version }}-386"
+      - "registry.hub.docker.com/tofuutils/tenv:{{ .Major }}.{{ .Minor }}-386"
+    skip_push: true
+
+docker_signs:
+  - cmd: cosign
+    env:
+      - COSIGN_EXPERIMENTAL=1
+    args:
+      - "sign"
+      - "--oidc-issuer=https://token.actions.githubusercontent.com"
+      - "${artifact}@${digest}"
+      - "--yes"
+    artifacts: all
+    output: true
+
+signs:
+  - cmd: cosign
+    env:
+      - COSIGN_EXPERIMENTAL=1
+    signature: "${artifact}.sig"
+    certificate: "${artifact}.pem"
+    args:
+      - "sign-blob"
+      - "--oidc-issuer=https://token.actions.githubusercontent.com"
+      - "--output-certificate=${certificate}"
+      - "--output-signature=${signature}"
+      - "${artifact}"
+      - "--yes"
+    artifacts: all
+    output: true
+
+  - cmd: gpg
+    args:
+      - "--pinentry-mode"
+      - "loopback"
+      - "--batch"
+      - "-u"
+      - "{{ .Env.GPG_FINGERPRINT }}"
+      - "--passphrase"
+      - "{{ .Env.GPG_PASSPHRASE }}"
+      - "--output"
+      - "${signature}"
+      - "--detach-sign"
+      - "${artifact}"
+    artifacts: all
+    signature: "${artifact}.gpgsig"
+    id: gpg
+
+archives:
+  - format: tar.gz
+    # this name template makes the OS and Arch compatible with the results of `uname`.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Tag }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    # use zip for windows archives
+    format_overrides:
+      - goos: windows
+        format: zip
+
+release:
+  name_template: "Release {{.Tag}}"
+
+changelog:
+  use: github-native
+  sort: asc
+  filters:
+    exclude:
+      - "^test:"
+
+checksum:
+  name_template: "{{ .ProjectName }}_{{ .Tag }}_checksums.txt"
+  algorithm: sha256
+
+nfpms:
+  - file_name_template: "{{ .ProjectName }}_{{- .Tag }}_{{ .Arch }}"
+    maintainer: "https://github.com/dvaumoron"
+    homepage: https://github.com/tofuutils/tenv
+    description: >-
+      tenv helps manage several version of OpenTofu (https://opentofu.org), Terraform (https://www.terraform.io/), Terragrunt (https://terragrunt.gruntwork.io), and Atmos (https://atmos.tools/),
+      tenv is the managing command and tofu and terraform are proxy commands.
+    license: "Apache-2.0"
+    formats:
+      - deb
+      - rpm
+      - apk
+      - archlinux
+    bindir: /usr/bin
+    section: default
+    contents:
+      - src: ./LICENSE
+        dst: /usr/share/doc/tenv/copyright
+        file_info:
+          mode: 0444
+    rpm:
+      packager: tofuutils <tofuutils@gmail.com>
+      signature:
+        key_file: '{{ if index .Env "GPG_KEY_FILE" }}{{.Env.GPG_KEY_FILE}}{{ end }}'
+    deb:
+      signature:
+        key_file: '{{ if index .Env "GPG_KEY_FILE" }}{{.Env.GPG_KEY_FILE}}{{ end }}'
+    apk:
+      signature:
+        key_file: '{{ if index .Env "GPG_KEY_FILE" }}{{.Env.GPG_KEY_FILE}}{{ end }}'
+    archlinux:
+      pkgbase: tenv
+      packager: tofuutils <tofuutils@gmail.com>
+
+snapcrafts:
+  - name: tenv
+    publish: true
+    summary: OpenTofu, Terraform, Terragrunt, and Atmos version manager, written in Go.
+    description: |
+      tenv is a versatile version manager for OpenTofu, Terraform, Terragrunt and Atmos, written in Go.
+      Our tool simplifies the complexity of handling different versions of these powerful tools,
+      ensuring developers and DevOps professionals
+      can focus on what matters most - building and deploying efficiently.
+    disable: "false"
+    channel_templates:
+      - "latest/stable"
+    grade: "stable"
+    confinement: strict
+    license: Apache-2.0
+    base: core22
+    apps:
+      tenv:
+        plugs: ["home", "network", "network-bind"]
+        command: tenv
+        aliases: [tenv]
+      tofu:
+        plugs: ["home", "network", "network-bind"]
+        command: tofu
+        aliases: [tofu]
+      terraform:
+        plugs: ["home", "network", "network-bind"]
+        command: terraform
+        aliases: [terraform]
+      terragrunt:
+        plugs: ["home", "network", "network-bind"]
+        command: terragrunt
+        aliases: [terragrunt]
+      tf:
+        plugs: ["home", "network", "network-bind"]
+        command: tf
+        aliases: [tf]
+      atmos:
+        plugs: ["home", "network", "network-bind"]
+        command: atmos
+        aliases: [atmos]
+
+aurs:
+  - name: tenv-bin
+    # Artifact IDs to filter for.
+    # Empty means all IDs (no filter).
+    ids: []
+    homepage: "https://tofuutils.github.io/tenv/"
+    description: "OpenTofu, Terraform, Terragrunt, and Atmos version manager, written in Go."
+    maintainers:
+      - "Alexander Sharov <kvendingoldo@gmail.com>"
+      - "chaseme <aur@chase.ninja>"
+    contributors:
+      - "Alexander Sharov <kvendingoldo@gmail.com>"
+      - "chaseme <aur@chase.ninja>"
+    license: "Apache-2.0"
+    private_key: "{{ .Env.AUR_KEY }}"
+    git_url: "ssh://aur@aur.archlinux.org/tenv-bin.git"
+    skip_upload: false
+    provides:
+      - atmos
+      - tenv
+      - terraform
+      - terragrunt
+      - tf
+      - tofu
+    conflicts:
+      - atmos
+      - atmos-bin
+      - opentofu
+      - opentofu-bin
+      - opentofu-bin-stable
+      - opentofu-git
+      - terraform
+      - terragrunt
+      - tfenv
+      - tgenv
+      - tofuenv
+    depends: []
+    optdepends:
+      - "cosign: package validation for OpenTofu"
+    backup: []
+    package: |-
+      # bin
+      install -Dm 0755 "atmos" "${pkgdir}/usr/bin/atmos"
+      install -Dm 0755 "tenv" "${pkgdir}/usr/bin/tenv"
+      install -Dm 0755 "terraform" "${pkgdir}/usr/bin/terraform"
+      install -Dm 0755 "terragrunt" "${pkgdir}/usr/bin/terragrunt"
+      install -Dm 0755 "tf" "${pkgdir}/usr/bin/tf"
+      install -Dm 0755 "tofu" "${pkgdir}/usr/bin/tofu"
+
+      # license
+      install -Dm 0644 "LICENSE" "${pkgdir}/usr/share/licenses/tenv/LICENSE"
+      install -Dm 0644 "LICENSE" "${pkgdir}/usr/share/doc/tenv/LICENSE"
+
+      # readme
+      install -Dm 0644 "README.md" "${pkgdir}/usr/share/doc/tenv/README.md"
+
+      # completions
+      mkdir -p "${pkgdir}/usr/share/bash-completion/completions/"
+      mkdir -p "${pkgdir}/usr/share/zsh/site-functions/"
+      mkdir -p "${pkgdir}/usr/share/fish/vendor_completions.d/"
+
+      for i in bash fish zsh; do
+        ./tenv completion $i > ./tenv.$i
+      done
+
+      install -Dm644 "./tenv.bash" "${pkgdir}/usr/share/bash-completion/completions/tenv"
+      install -Dm644 "./tenv.zsh" "${pkgdir}/usr/share/zsh/site-functions/tenv"
+      install -Dm644 "./tenv.fish" "${pkgdir}/usr/share/fish/vendor_completions.d/tenv.fish"
+    commit_author:
+      name: tofuutils
+      email: tofuutils@gmail.com
+    commit_msg_template: "Release tenv {{.Tag}}"
+    goamd64: v1
+
+    # Default: 'ssh -i {{ .KeyPath }} -o StrictHostKeyChecking=accept-new -F /dev/null'
+    # git_ssh_command: "ssh -i {{ .Env.KEY }} -o SomeOption=yes"
+
+    url_template: "https://github.com/tofuutils/tenv/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    directory: "."
+# chocolateys:
+#   - name: tenv
+#     # Empty means all IDs.
+#     ids: []
+#     owners: tofuutils
+#     title: tenv
+#     authors: tofuutils
+#     project_url: https://github.com/tofuutils/tenv
+#     url_template: https://github.com/tofuutils/tenv/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+#     # App's icon.
+#     icon_url: ""
+#     copyright: 2024 tofuutils authors
+#     license_url: https://github.com/tofuutils/tenv/blob/main/LICENSE
+#     require_license_acceptance: false
+#     project_source_url: https://github.com/tofuutils/tenv
+#     docs_url: https://github.com/tofuutils/tenv/blob/main/README.md
+#     tags: "terraform opentofu terragrunt tofuenv tfenv tenv"
+#     summary: OpenTofu, Terraform, Terragrunt, and Atmos version manager, written in Go.
+#     description: |
+#       OpenTofu, Terraform, Terragrunt, and Atmos version manager, written in Go.
+#     release_notes: "https://github.com/tofuutils/tenv/releases/tag/v{{ .Version }}"
+#     dependencies:
+#       - id: nfpm
+#         version: 2.20.0
+#     api_key: "{{ .Env.CHOCOLATEY_API_KEY }}"
+#     source_repo: "https://push.chocolatey.org/"
+#     skip_publish: false
+#     goamd64: v1
