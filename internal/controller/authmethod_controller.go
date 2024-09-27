@@ -46,6 +46,9 @@ type AuthMethodReconciler struct {
 //
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.17.3/pkg/reconcile
+
+const authMethodFinalizer = "authmethod.consul.cloudopskit.finalizer"
+
 func (r *AuthMethodReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
