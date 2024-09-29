@@ -18,11 +18,17 @@ package controller
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/CloudOpsKit/consul-acl-operator/internal/consul"
+	"github.com/hashicorp/consul/api"
+	"go.uber.org/zap"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/tools/record"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 
 	consulcloudopskitorgv1alpha1 "github.com/CloudOpsKit/consul-acl-operator/api/v1alpha1"
 )
@@ -32,9 +38,10 @@ const aclRoleFinalizer = "aclrole.consul.cloudopskit.finalizer"
 // AclRoleReconciler reconciles a AclRole object
 type AclRoleReconciler struct {
 	client.Client
-	Scheme *runtime.Scheme
-    Config        operatorConfig.Config
-    EventRecorder record.EventRecorder
+	Scheme        *runtime.Scheme
+	Log           *zap.SugaredLogger
+	Config        operatorConfig.Config
+	EventRecorder record.EventRecorder
 }
 
 //+kubebuilder:rbac:groups=consul.cloudopskit.org.cloudopskit.org,resources=aclroles,verbs=get;list;watch;create;update;patch;delete
@@ -51,10 +58,10 @@ type AclRoleReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.17.3/pkg/reconcile
 func (r *AclRoleReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-reqLogger := r.Log.With("aclrole", req.NamespacedName)
+	reqLogger := r.Log.With("aclrole", req.NamespacedName)
 	reqLogger.Debug("Reconciling AclRole")
 
-	aclRole := &consulv1beta1.AclRole{}
+	aclRole := &consulcloudopskitorgv1alpha1.AclRole{}
 
 	if err := r.Get(ctx, req.NamespacedName, aclRole); err != nil {
 		if client.IgnoreNotFound(err) == nil {
@@ -123,7 +130,7 @@ reqLogger := r.Log.With("aclrole", req.NamespacedName)
 		}
 
 	} else {
-		isPoliciesSame, err := consulv1beta1.IsPoliciesEqual(policies, role.Policies)
+		isPoliciesSame, err := consulcloudopskitorgv1alpha1.IsPoliciesEqual(policies, role.Policies)
 		if err != nil {
 			r.EventRecorder.Eventf(aclRole, v1.EventTypeNormal, events.EventStatusInfo, "AclRole policies are not the same")
 		}
@@ -199,7 +206,7 @@ reqLogger := r.Log.With("aclrole", req.NamespacedName)
 	return ctrl.Result{}, nil
 }
 
-func (r *AclRoleReconciler) finalizeAclRole(reqLogger *zap.SugaredLogger, config operatorConfig.Config, m *consulv1beta1.AclRole) error {
+func (r *AclRoleReconciler) finalizeAclRole(reqLogger *zap.SugaredLogger, config operatorConfig.Config, m *consulcloudopskitorgv1alpha1.AclRole) error {
 	if err := consul.DeleteAclRole(reqLogger, config, m.Namespace+"_"+m.Name); err != nil {
 		return err
 	}
@@ -207,7 +214,7 @@ func (r *AclRoleReconciler) finalizeAclRole(reqLogger *zap.SugaredLogger, config
 	return nil
 }
 
-func (r *AclRoleReconciler) updateAclRoleStatus(aclRoleController *consulv1beta1.AclRole, status *consulv1beta1.AclRoleStatus) error {
+func (r *AclRoleReconciler) updateAclRoleStatus(aclRoleController *consulcloudopskitorgv1alpha1.AclRole, status *consulcloudopskitorgv1alpha1.AclRoleStatus) error {
 	patch := client.MergeFrom(aclRoleController.DeepCopy())
 	aclRoleController.Status = *status
 	return r.Status().Patch(context.TODO(), aclRoleController, patch)
