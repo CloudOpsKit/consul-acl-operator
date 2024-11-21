@@ -9,8 +9,8 @@ require (
 	github.com/onsi/gomega v1.35.1
 	github.com/spf13/viper v1.19.0
 	go.uber.org/zap v1.27.0
-	k8s.io/api v0.31.2
-	k8s.io/apimachinery v0.31.2
+	k8s.io/api v0.31.3
+	k8s.io/apimachinery v0.31.3
 	k8s.io/client-go v0.31.2
 	sigs.k8s.io/controller-runtime v0.19.1
 )
