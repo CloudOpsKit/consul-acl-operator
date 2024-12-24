@@ -4,7 +4,7 @@ go 1.21
 toolchain go1.23.4
 
 require (
-	github.com/hashicorp/consul/api v1.30.0
+	github.com/hashicorp/consul/api v1.31.0
 	github.com/onsi/ginkgo/v2 v2.22.1
 	github.com/onsi/gomega v1.36.2
 	github.com/spf13/viper v1.19.0
