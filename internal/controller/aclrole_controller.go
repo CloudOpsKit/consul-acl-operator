@@ -20,6 +20,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/CloudOpsKit/consul-acl-operator/internal/config"
 	"github.com/CloudOpsKit/consul-acl-operator/internal/consul"
 	"github.com/hashicorp/consul/api"
 	"go.uber.org/zap"
@@ -40,7 +41,7 @@ type AclRoleReconciler struct {
 	client.Client
 	Scheme        *runtime.Scheme
 	Log           *zap.SugaredLogger
-	Config        operatorConfig.Config
+	Config        config.OperatorConfig
 	EventRecorder record.EventRecorder
 }
 

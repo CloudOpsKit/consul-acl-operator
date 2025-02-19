@@ -1,7 +1,8 @@
 module github.com/CloudOpsKit/consul-acl-operator
 
-go 1.21
-toolchain go1.23.4
+go 1.23.0
+
+toolchain go1.24.0
 
 require (
 	github.com/hashicorp/consul/api v1.31.1

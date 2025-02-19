@@ -1,8 +1,8 @@
 package consul
 
 import (
-	"github.com/hashicorp/consul/api"
 	operatorConfig "github.com/CloudOpsKit/consul-acl-operator/internal/config"
+	"github.com/hashicorp/consul/api"
 	"go.uber.org/zap"
 )
 
