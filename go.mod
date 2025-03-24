@@ -6,7 +6,7 @@ toolchain go1.24.0
 
 require (
 	github.com/hashicorp/consul/api v1.31.2
-	github.com/onsi/ginkgo/v2 v2.23.2
+	github.com/onsi/ginkgo/v2 v2.23.3
 	github.com/onsi/gomega v1.36.2
 	go.uber.org/zap v1.27.0
 	k8s.io/api v0.32.3
