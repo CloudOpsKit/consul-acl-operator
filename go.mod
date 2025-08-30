@@ -9,7 +9,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.25.2
 	github.com/onsi/gomega v1.38.2
 	go.uber.org/zap v1.27.0
-	k8s.io/api v0.33.4
+	k8s.io/api v0.34.0
 	k8s.io/apimachinery v0.34.0
 	k8s.io/client-go v0.33.4
 	sigs.k8s.io/controller-runtime v0.21.0
