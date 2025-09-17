@@ -3,7 +3,7 @@ module github.com/CloudOpsKit/consul-acl-operator
 go 1.25.0
 
 require (
-	github.com/hashicorp/consul/api v1.32.2
+	github.com/hashicorp/consul/api v1.32.3
 	github.com/onsi/ginkgo/v2 v2.25.3
 	github.com/onsi/gomega v1.38.2
 	go.uber.org/zap v1.27.0
