@@ -4,7 +4,7 @@ go 1.25.3
 
 require (
 	github.com/hashicorp/consul/api v1.33.0
-	github.com/onsi/ginkgo/v2 v2.27.2
+	github.com/onsi/ginkgo/v2 v2.27.3
 	github.com/onsi/gomega v1.38.3
 	go.uber.org/zap v1.27.1
 	k8s.io/api v0.34.3
